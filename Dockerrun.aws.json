@@ -1,0 +1,35 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions", [
+   {
+     "name": "client",
+     "image": "turmune/multi-client",
+     "hostname": "client",
+     "essential": false
+   },
+   {
+     "name": "server",
+     "image": "turmune/multi-server",
+     "hostname": "api",
+     "essential": false
+   },
+   {
+     "name": "worker",
+     "image": "turmune/multi-workers",
+     "hostname": "worker",
+     "essential": false
+   },
+   {
+     "name": "nginx",
+     "image": "turmune/multi-nginx",
+     "hostname": "nginx",
+     "essential": true,
+     "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        } 
+      ]
+   }
+  ]
+}
