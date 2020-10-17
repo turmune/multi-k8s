@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+  
+before_install:
+  - docker build -t turmune/react-test -f ./client/Dockerfile.dev ./client
+  
+script:
+  - docker run turmune/react-test npm test -- --coverage
+  
+after_success:
+  - docker build -t turmune/multi-client ./client
+  - docker build -t turmune/multi-nginx ./nginx
+  - docker build -t turmune/multi-server ./server
+  - docker build -t turmune/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push turmune/multi-client
+  - docker push turmune/multi-nginx
+  - docker push turmune/multi-server
+  - docker push turmune/multi-worker
