@@ -1,6 +1,6 @@
 {
   "AWSEBDockerrunVersion": 2,
-  "containerDefinitions", [
+  "containerDefinitions": [
    {
      "name": "client",
      "image": "turmune/multi-client",
@@ -29,7 +29,8 @@
           "hostPort": 80,
           "containerPort": 80
         } 
-      ]
+      ],
+      "links": ["client", "server"]
    }
   ]
 }

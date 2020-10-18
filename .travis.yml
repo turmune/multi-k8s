@@ -22,3 +22,9 @@ after_success:
   - docker push turmune/multi-nginx
   - docker push turmune/multi-server
   - docker push turmune/multi-worker
+  
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "multi-docker"
+  env: "MultiDocker-env"
