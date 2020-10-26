@@ -1,36 +1,9 @@
 sudo: required
-language: generic
-
 services:
   - docker
-
 before_install:
-  - docker build -t turmune/react-test -f ./client/Dockerfile.dev ./client
-
-script:
-  - docker run -e CI=true turmune/react-test npm test
-
-after_success:
-  - docker build -t turmune/multi-client ./client
-  - docker build -t turmune/multi-nginx ./nginx
-  - docker build -t turmune/multi-server ./server
-  - docker build -t turmune/multi-worker ./worker
-  # Log in to the docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Take those images and push them to docker hub
-  - docker push turmune/multi-client
-  - docker push turmune/multi-nginx
-  - docker push turmune/multi-server
-  - docker push turmune/multi-worker
-  
-deploy:
-  provider: elasticbeanstalk
-  region: 'us-west-2'
-  app: 'multi-docker'
-  env: 'MultiDocker-env'
-  bucket_name: 'elasticbeanstalk-us-west-2-803165169976'
-  bucket_path: 'docker-multi'
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+  - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file service-account.json
