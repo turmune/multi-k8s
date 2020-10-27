@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metata:
+  name: cinemarv-com-tls
+spec:
+  secretName: cinemarv-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: cinemarv.com
+  dnsNames:
+    - cinemarv.com
+    - www.cinemarv.com
+  acme:
+    config:
+      - http01: 
+          ingressClass: nginx
+        domains:
+          - cinemarv.com
+          - www.cinemarv.com
